@@ -61,7 +61,7 @@
     <!-- *** This fieldType is used by Sunspot! *** -->
     <fieldType name="text" class="solr.TextField" omitNorms="false">
       <analyzer>
-        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="max-word" dicPath="mmseg4j_dict"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>
@@ -96,6 +96,26 @@
     </fieldType>
     <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
     <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
+    <!-- mmseg4j-->
+    <fieldType name="text_mmseg4j_complex" class="solr.TextField" positionIncrementGap="100" > 
+       <analyzer> 
+           <tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="complex" dicPath="dic"/> 
+       </analyzer> 
+    </fieldType> 
+    <fieldType name="text_mmseg4j_maxword" class="solr.TextField" positionIncrementGap="100" > 
+       <analyzer> 
+           <tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="max-word" dicPath="dic"/> 
+       </analyzer> 
+    </fieldType> 
+    <fieldType name="text_mmseg4j_simple" class="solr.TextField" positionIncrementGap="100" > 
+       <analyzer> 
+         <!--
+           <tokenizerclass="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory"mode="simple" dicPath="n:/OpenSource/apache-solr-1.3.0/example/solr/my_dic"/>
+           -->
+           <tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="simple" dicPath="dic"/>    
+       </analyzer> 
+    </fieldType>
+    <!-- mmseg4j-->
   </types>
   <fields>
     <!-- Valid attributes for fields:
@@ -123,6 +143,11 @@
      default: a value that should be used if no value is specified
        when adding a document.
    -->
+    <!-- mmseg4j -->
+    <field name="mmseg4j_complex" type="text_mmseg4j_complex" indexed="true" stored="true"/>
+    <field name="mmseg4j_maxword" type="text_mmseg4j_maxword" indexed="true" stored="true"/>
+    <field name="mmseg4j_simple" type="text_mmseg4j_simple" indexed="true" stored="true"/>
+    <!--mmseg4j -->
     <!-- *** This field is used by Sunspot! *** -->
     <field name="id" stored="true" type="string" multiValued="false" indexed="true"/>
     <!-- *** This field is used by Sunspot! *** -->
